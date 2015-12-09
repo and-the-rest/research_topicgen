@@ -1,6 +1,8 @@
 
 module CsResearchTopicGen
 	
+		VERSION = '0.0.2'
+
 	@@buzz1 = [
 			 "integrated",
 			 "parallel",
