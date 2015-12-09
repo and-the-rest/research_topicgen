@@ -90,7 +90,7 @@ module CsResearchTopicGen
 		mid_connective = vowel_check( sentence[4], false)
 		sentence.insert(0, pre_connective) # #insert used to mainatin the style
 		sentence.insert(5, mid_connective) 
-		puts sentence.join(' ')
+		return sentence.join(' ')
 	end
 
 	def self.vowel_check(word, caps)
