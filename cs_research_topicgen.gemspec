@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
 	s.description		=	'A simple gem to generate worthy CS Research Topics.'
 	s.authors			=	['slackr']
 	s.email				=	'slackErEhth77@openmailbox.org'
-	s.homepage			=	'http://rubygems.org/gems/cs_research_topicgen'
+	s.homepage			=	'https://rubygems.org/gems/cs_research_topicgen'
 	s.files				=	["lib/cs_research_topicgen.rb"]
 	s.license			=	'MIT'
 end
