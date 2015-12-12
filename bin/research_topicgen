@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require 'research_topicgen'
+ResearchTopicGen.cs
+ResearchTopicGen.crypto
+ResearchTopicGen.system

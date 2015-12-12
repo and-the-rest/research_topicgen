@@ -1,4 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'cs_research_topicgen'
-CsResearchTopicGen.generate()
