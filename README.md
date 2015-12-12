@@ -1,5 +1,8 @@
 # CS Research Topic Generator
 A simple gem to generate worthy Research topics.
 
-###DOCUMENTING......
+###Installation
+>gem install research_topic_generator
+
+#DOCUMENTING......
 
