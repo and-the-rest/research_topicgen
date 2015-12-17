@@ -14,7 +14,7 @@ This gem has been translated to Ruby from:
 ### From Rubygems
 
 ``` bash
-    $ gem install research_topicgen
+ $ gem install research_topicgen
 ```
 
 ## Usage
