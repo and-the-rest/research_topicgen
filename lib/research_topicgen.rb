@@ -1,11 +1,12 @@
 require 'psych'
 
 module ResearchTopicGen
-		VERSION = '0.1.2'.freeze
+	VERSION = '0.1.2'.freeze
 
 	def self.loadit(topic)
 		Psych.load_file(File.join(File.dirnam(__FILE__), 'data', topic + '.yml'))
 	end
+
 	def self.load_file(topic)
 		case topic
 		when 'cs'
@@ -39,7 +40,7 @@ module ResearchTopicGen
 			.flatten!
 		word1, word2, word3, word4 = system_file[:buzz1].sample, system_file[:buzz2].sample, system_file[:buzz3].sample, system_file[:buzz2].sample
 		name, ingword = system_file[:names].sample, system_file[:ings].sample
-
+	
 		word2, word3, word4	=
 			case
 			when word2==word1
