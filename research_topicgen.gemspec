@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
 	s.name				=	'research_topicgen'
-	s.version 			=	'0.1.1'
+	s.version 			=	'0.1.2'
 	s.executables	    <<	'research_topicgen'
 	s.summary			=	'research_topicgen - A Research Topic Generator'
 	s.description		=	'A simple gem to generate worthy Research Topics.'
