@@ -41,7 +41,7 @@ module ResearchTopicGen
   # System Research Topic Generatorg
   def self.system
     connectives_file, system_file = self.load_file('system')
-    connectives = *connectives_file[:common_connectives], connectives_file[:extra_connectives][0]
+    connectives = *connectives_file[:common_connectives], *connectives_file[:extra_connectives][0]
     connectives.flatten!
     word1, word2, word3, word4 = system_file[:buzz1].sample, system_file[:buzz2].sample, system_file[:buzz3].sample, system_file[:buzz2].sample
     name, ingword = system_file[:names].sample, system_file[:ings].sample
@@ -95,15 +95,15 @@ module ResearchTopicGen
   # Logic here needs a change.
   def self.random_word(file, checks, *col)
     if checks == 2
-    	col[2] = file[:buzz3].sample until col[0] != col[2] && col[1] != col[2] 
+    	col[2] = file[:buzz3].sample until col[0] != col[2] || col[1] != col[2] 
     	col[1..checks]
     elsif checks == 3
-    	col[3] = file[:buzz2].sample until col[3] != col[1] && col[3] != col[2] && col[3] != col[0] 
+    	col[3] = file[:buzz2].sample until col[3] != col[1] || col[3] != col[2] || col[3] != col[0] 
     	col[1..checks]
     elsif checks == 4
-    	col[4] = file[:buzz2].sample until col[3] != col[4] && col[3] != col[2] && col[3] != col[1] && col[3] != col[0]
+    	col[4] = file[:buzz2].sample until col[3] != col[4] || col[3] != col[2] || col[3] != col[1] || col[3] != col[0]
     elsif checks == 5
-    	col[5] = file[:buzz3].sample until col[5] != col[3] && col[5] != col[4] && col[5] != col[2] && col[5] != col[1]
+    	col[5] = file[:buzz3].sample until col[5] != col[3] || col[5] != col[4] || col[5] != col[2] || col[5] != col[1]
     else
     	col[1] = file[:buzz2].sample until col[0] != col[1]
       col[1]
@@ -120,3 +120,4 @@ module ResearchTopicGen
       caps ? article.capitalize : article
     end
 end
+
