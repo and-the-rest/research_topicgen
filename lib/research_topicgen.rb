@@ -1,123 +1,149 @@
 require 'psych'
 
 module ResearchTopicGen
-  VERSION = '0.1.3'.freeze
+  VERSION = '0.1.6'.freeze
+  BZS = %i[buzz1 buzz2 buzz3]
 
-  def self.load_yml_data(topic)
-    Psych.load_file(File.join(File.dirname(__FILE__), "data", "#{topic}.yml"))
-  end
-
-  def self.load_file(topic)
-    case topic
-    when 'cs'
-      [load_yml_data('connectives'), load_yml_data('cs_data')]
-    when 'system'
-      [load_yml_data('connectives'), load_yml_data('system_data')]
-    when 'crypto'
-      load_yml_data('crypto_data')
+  # Crypto Research Topic Generator
+  def self.crypto
+    cf = self.load_yml_data( 'crypto' )
+    word1, word2, word3 = self.samples( BZS, cf )
+    until word1 != word2
+      word2 = cf[:buzz2].sample
     end
+    pre_connective = self.add_article(word1, caps=true)
+    "#{pre_connective} #{word1}, #{word2} #{word3}."
   end
-	
+
   # CS Research Topic Generator
   def self.cs
     connectives_file, cs_file = self.load_file('cs')
-    connectives	= *connectives_file[:common_connectives], *connectives_file[:extra_connectives][1]
-    connectives.flatten! 
-    sentence = [cs_file[:buzz1].sample,	
-           cs_file[:buzz2].sample,
-           cs_file[:buzz3].sample,
-           connectives.sample,
-           cs_file[:buzz1].sample,
-           cs_file[:buzz2].sample,
-           cs_file[:buzz3].sample
-         ]
-     pre_connective = ResearchTopicGen.add_article(sentence[0], true)
-     mid_connective = ResearchTopicGen.add_article(sentence[4], false)
-     sentence.insert(0, pre_connective)
-     sentence.insert(5, mid_connective)
-     "#{sentence.join(' ')}."
+    com_connective	= [
+      connectives_file[:common_connectives].sample,
+      connectives_file[:extra_connectives][1]
+    ].sample
+
+    pre_wrds = self.samples( %i[buzz1 buzz2 buzz3], cs_file )
+    pst_wrds = self.samples( %i[buzz1 buzz2 buzz3], cs_file )
+    pre_connective = self.add_article(pre_wrds.first, caps=true)
+    mid_connective = self.add_article(pst_wrds.first)
+
+    sentence = [
+      pre_connective,
+      *pre_wrds,
+      com_connective,
+      mid_connective,
+      *pst_wrds
+    ]
+    "#{sentence.join ' '}."
   end
 
   # System Research Topic Generatorg
   def self.system
-    connectives_file, system_file = self.load_file('system')
-    connectives = *connectives_file[:common_connectives], *connectives_file[:extra_connectives][0]
-    connectives.flatten!
-    word1, word2, word3, word4 = system_file[:buzz1].sample, system_file[:buzz2].sample, system_file[:buzz3].sample, system_file[:buzz2].sample
-    name, ingword = system_file[:names].sample, system_file[:ings].sample
-  
-    word2, word3, word4  =
-      case
-  		when word2 == word1
-  			self.random_word(system_file, 1, word1, word2)
-  		when word3 == word1 || word3 == word2
-  			self.random_word(system_file, 2, word1, word2, word3)
-  		when word4 == word2 || word4 == word3 || word4 == word1
-  			self.random_word(system_file, 3, word1, word2, word3, word4)
-  		else
-  			[word2,	word3,	word4]
-  		end
-    
-    # generic: [name]: [word1], [word2] [word3]
-    pre_connective = self.add_article(word1, true)
-    result1 = "#{name}: #{pre_connective} #{word1}, #{word2} #{word3}"
-    	
-    # approach-based: [generic] - [a/an] [buzz2] approach
-    mid_connective = self.add_article(word4, false)
-    result2	= "#{name}:#{word1}, #{word2} #{word3}s-- #{mid_connective} #{word4} approach"
-    	
-    # on...: on[foo]s
-    result3 = "On #{word1}, #{word2} #{word3}s"
-    word5, word6, word7 = system_file[:buzz1].sample, system_file[:buzz2].sample, system_file[:buzz3].sample
-    mid_connective = self.add_article(word5, false)
-    word6 = self.random_word(system_file, 4, word1, word2, word3, word5, word6) if word5 == word6 || word5 == word3 || word5 == word2 || word5 == word1
-    word7 = self.random_word(system_file, 5, word1, word2, word3, word5, word6, word7) if word7 == word5 || word7 == word6 || word7 == word3 || word7 == word2 || word7 == word1
-    result4 = "#{result1} #{mid_connective} #{word5} #{word6} #{word7}s"
-    result5 = "#{ingword} #{word1}, #{word2} #{word3}s"
-    results = [result1, result2, result3, result4, result5]
-    "#{results.sample}."
-  end
-
-  # Crypto Research Topic Generator
-  def self.crypto
-    crypto_file = self.load_file('crypto')
-    word1, word2, word3 = crypto_file[:buzz1].sample, crypto_file[:buzz2].sample, crypto_file[:buzz3].sample
-    word2 = word2.match(word1) ? ResearchTopicGen.random_word(crypto_file, 1, word1, word2) : word2		#If word1 and word2 are same, replace word2 with a different word.
-    pre_connective = ResearchTopicGen.add_article(word1, true)
-    sentence = "#{pre_connective} #{word1}, #{word2} #{word3}."
+    mtds = [:generic, :approach_based, :onfoo, :looong, :ings]
+    gen = SystemTopicGenerator.new
+    gen.send( mtds.sample )
   end
 
   # Generate Random Topic
   def self.random
-    result = [ResearchTopicGen.cs, ResearchTopicGen.system, ResearchTopicGen.crypto].sample
+    topic = %w[ cs system crypto ].sample
+    self.send( topic )
   end
 
-  # Logic here needs a change.
-  def self.random_word(file, checks, *col)
-    if checks == 2
-    	col[2] = file[:buzz3].sample until col[0] != col[2] || col[1] != col[2] 
-    	col[1..checks]
-    elsif checks == 3
-    	col[3] = file[:buzz2].sample until col[3] != col[1] || col[3] != col[2] || col[3] != col[0] 
-    	col[1..checks]
-    elsif checks == 4
-    	col[4] = file[:buzz2].sample until col[3] != col[4] || col[3] != col[2] || col[3] != col[1] || col[3] != col[0]
-    elsif checks == 5
-    	col[5] = file[:buzz3].sample until col[5] != col[3] || col[5] != col[4] || col[5] != col[2] || col[5] != col[1]
-    else
-    	col[1] = file[:buzz2].sample until col[0] != col[1]
-      col[1]
+  # System Research Topic Generatorg
+  class SystemTopicGenerator
+    def initialize
+      @connectives_file, @system_file = ResearchTopicGen.load_file('system')
+      @added = {}
+      @words = []
+    end
+
+    # generic: [name]: [word1], [word2] [word3]
+    def generic
+      w1_3 = format_words( 0, caps = true )
+      "#{gen_word( :names )}: #{w1_3}"
+    end
+
+    # approach-based: [generic] - [a/an] [buzz2] approach
+    def approach_based
+      buzz2 = gen_word :buzz2
+      article = ResearchTopicGen.add_article( buzz2 )
+      "#{generic} - #{article} #{buzz2} approach"
+    end
+
+    # on...: on[foo]s
+    def onfoo
+      foo = format_words( 0, article=false )
+      "on #{foo}s"
+    end
+
+    # [generic] [a/an] [buzz1], [buzz2] [buzz3]s
+    def looong
+      rest = format_words( 4 )
+      "#{generic} #{rest}s"
+    end
+
+    # [ing] [buzz1] [buzz2] [buzz3]s
+    def ings
+      ing = gen_word( :ings )
+      rest = format_words(0, article=false)
+      "#{ing} #{rest}s"
+    end
+
+    private
+
+    def format_words( offset, caps = false, article = true )
+      gen_words # (re-)generate a fresh set of words
+      ws = @words[offset, 3]
+      bz1 = ws.first
+      bz2_3 = ws[1, 2].join( ' ' )
+      article = article ? ResearchTopicGen.add_article( bz1, caps ) : ''
+      "#{article} #{bz1}, #{bz2_3}"
+    end
+
+    def gen_word( bz )
+      loop do
+        word = @system_file[bz].sample
+        unless @added[word]
+          @added[word] = true
+          return word
+        end
+      end
+    end
+
+    def gen_words
+      # flush stored results
+      @added = {}
+      @words = []
+      BZS.cycle(2).map do |bz|
+        @words.push gen_word( bz )
+      end
+      @words.insert(3, gen_word(:buzz2))
     end
   end
 
-  # return the correct article
-  def self.add_article(word, caps)
-    if word.match(/^[aeiou]/i) 
-    	article = "an"
+
+  def self.add_article(word, caps=false)
+    if word.downcase.start_with?('a', 'e', 'i', 'o', 'u')
+      article = "an"
     else
-    	article = 'a'
-    end			
-      caps ? article.capitalize : article
+      article = 'a'
     end
+    caps ? article.capitalize : article
+  end
+
+  def self.samples( keys , table )
+    keys.map { |key| table[key].sample }
+  end
+
+  def self.load_yml_data(topic)
+    data = File.join( File.dirname(__FILE__), "data", "#{topic}.yml" )
+    Psych.load_file( data )
+  end
+
+  def self.load_file(topic)
+    conf = load_yml_data('connectives')
+    [ conf, load_yml_data(topic) ]
+  end
 end
-

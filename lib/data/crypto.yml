@@ -1,0 +1,151 @@
+---
+:buzz1:
+- anonymous
+- blind
+- boomerang-attack-resistant
+- coercion-resistant
+- concurrent
+- deniable
+- dictionary-attack-resistant
+- differential-cryptanalysis-resistant
+- distributed
+- efficient
+- fair
+- forward-secure
+- fully-homomorphic
+- homomorphic
+- hybrid
+- identity-based
+- intrusion-resilient
+- indifferentiable
+- key-insulated
+- leakage-resilient
+- lattice-based
+- lossy
+- new
+- non-interactive
+- non-malleable
+- optimistic
+- pairing-based
+- parallelizable
+- practical
+- proactive
+- provably-secure
+- quantum
+- robust
+- related-key attack resistant
+- selective-opening-secure
+- simple
+- statistically-binding
+- statistically-hiding
+- tamper-resistant
+- threshold
+- tweakable
+- unconditionally-secure
+- undeniable
+- unforgeable
+- universally-composable
+- unlinkable
+- verifiable
+- zero-knowledge
+:buzz2:
+- anonymous
+- blind
+- block-cipher-based
+- chameleon
+- coercion-resistant
+- collision-resistant
+- collusion-resistant
+- concurrent
+- DDH-based
+- discrete-log-based
+- distributed
+- factoring-based
+- fair
+- forward-secure
+- Gap-DH-based
+- fully-homomorphic
+- homomorphic
+- hybrid
+- identity-based
+- indifferentiable
+- intrusion-resilient
+- key-insulated
+- lattice-based
+- leakage-resilient
+- lossy
+- non-interactive
+- non-malleable
+- one-way-function-based
+- pairing-based
+- practical
+- proactive
+- proxy
+- quantum
+- random-oracle model
+- robust
+- RSA-based
+- selective-opening-secure
+- statistically-binding
+- statistically-hiding
+- strong-RSA-based
+- tamper-resistant
+- threshold
+- transitive
+- universally-composable
+- verifiable
+- zero-knowledge
+:buzz3:
+- accumulator
+- aggregate-signature scheme
+- all-or-nothing transform
+- attribute-based encryption scheme
+- authenticated encryption scheme
+- authentication protocol
+- commitment scheme
+- contract-signing protocol
+- digital cash scheme
+- digital-signature scheme
+- election protocol
+- electronic payment scheme
+- family of pseudorandom functions
+- family of pseudorandom permutations
+- finger-printing scheme
+- functional encryption scheme
+- fuzzy IBE scheme
+- group-signature scheme
+- encryption scheme
+- key-dependent message encryption scheme
+- hash function
+- identification scheme
+- identity-based encryption scheme
+- identity-based signature scheme
+- key-distribution protocol
+- key-escrow scheme
+- message-authentication code
+- metering scheme
+- micropayment scheme
+- mix-net
+- mode of operation
+- multi-authority attribute-based encryption scheme
+- multi-pary computation protocol
+- multi-signature scheme
+- order-preserving encryption scheme
+- oblivious transfer protocol
+- padding scheme
+- public-key encryption scheme
+- predicate encryption scheme
+- proof of knowledge
+- pseudonym system
+- pseudorandom bit generator
+- ring-signature scheme
+- secret-sharing scheme
+- secure-computation protocol
+- sequential aggregate signature scheme
+- session-key-exchange protocol
+- signature scheme
+- signcryption scheme
+- stream cipher
+- traitor-tracing scheme
+- voting protocol
+- watermarking scheme
